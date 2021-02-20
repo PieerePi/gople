@@ -16,11 +16,10 @@ import (
 	"github.com/PieerePi/gople/ch2/e2.2/unitconv"
 )
 
-func showResult(arg string) {
+func showUnitConv(arg string) error {
 	t, err := strconv.ParseFloat(arg, 64)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "converter: %v\n", err)
-		return
+		return err
 	}
 	f := unitconv.Fahrenheit(t)
 	c := unitconv.Celsius(t)
@@ -34,17 +33,22 @@ func showResult(arg string) {
 		m, unitconv.MeterToInch(m), i, unitconv.InchToMeter(i))
 	fmt.Printf("%s = %s, %s = %s\n",
 		k, unitconv.KiloToPound(k), p, unitconv.PoundToKilo(p))
+	return nil
 }
 
 func main() {
 	if len(os.Args) >= 2 {
 		for _, arg := range os.Args[1:] {
-			showResult(arg)
+			if err := showUnitConv(arg); err != nil {
+				fmt.Fprintf(os.Stderr, "converter: %v\n", err)
+			}
 		}
 	} else {
 		input := bufio.NewScanner(os.Stdin)
 		for input.Scan() {
-			showResult(input.Text())
+			if err := showUnitConv(input.Text()); err != nil {
+				fmt.Fprintf(os.Stderr, "converter: %v\n", err)
+			}
 		}
 	}
 }
