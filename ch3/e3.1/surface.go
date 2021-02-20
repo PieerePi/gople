@@ -47,7 +47,7 @@ func corner(i, j int) (float64, float64) {
 
 	// Compute surface height z.
 	z := f(x, y)
-	if z > math.MaxFloat64 {
+	if math.IsNaN(z) || math.IsInf(z, 1) || math.IsInf(z, -1) {
 		z = 0
 	}
 
