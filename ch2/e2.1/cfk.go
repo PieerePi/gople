@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 
-	"gople/ch2/e2.1/tempconv"
+	"github.com/PieerePi/gople/ch2/e2.1/tempconv"
 )
 
 func main() {

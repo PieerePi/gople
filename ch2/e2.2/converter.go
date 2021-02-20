@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 
-	"gople/ch2/e2.2/unitconv"
+	"github.com/PieerePi/gople/ch2/e2.2/unitconv"
 )
 
 func main() {
