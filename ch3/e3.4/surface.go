@@ -10,6 +10,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"math"
 	"net/http"
 	"os"
@@ -114,11 +115,7 @@ func main() {
 			svg(w, nil, r)
 		}
 		http.HandleFunc("/", handler)
-		if err := http.ListenAndServe("localhost:8000", nil); err != nil {
-			fmt.Fprintf(os.Stderr, "surface: http.ListenAndServe returns error, %v\n", err)
-			os.Exit(1)
-		}
-		os.Exit(0)
+		log.Fatal(http.ListenAndServe("localhost:8000", nil))
 	default:
 		fmt.Fprintln(os.Stderr, "usage: surface eggbox|saddle|web")
 		os.Exit(1)

@@ -28,7 +28,7 @@ func main() {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
 			// Image point (px, py) represents complex value z.
-			img.Set(px, py, mandelbrot(z))
+			img.Set(px, py, newton(z))
 		}
 	}
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
@@ -77,7 +77,7 @@ func newton(z complex128) color.Color {
 	for i := uint8(0); i < iterations; i++ {
 		z -= (z - 1/(z*z*z)) / 4
 		if cmplx.Abs(z*z*z*z-1) < 1e-6 {
-			return color.Gray{255 - contrast*i}
+			return color.RGBA{255 - contrast*i, contrast * i, 128 - contrast*i, 255}
 		}
 	}
 	return color.Black
