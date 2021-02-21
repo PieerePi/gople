@@ -37,15 +37,15 @@ func main() {
 		for px := 0; px < width; px++ {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			// Supersampling
-			subSamples := make([]color.Color, 0)
+			subPixels := make([]color.Color, 0)
 			for i := 0; i < 2; i++ {
 				for j := 0; j < 2; j++ {
 					z := complex(x+offX[i], y+offY[j])
-					subSamples = append(subSamples, mandelbrot(z))
+					subPixels = append(subPixels, mandelbrot(z))
 				}
 			}
 			// Image point (px, py) represents complex value z.
-			img.Set(px, py, avg(subSamples))
+			img.Set(px, py, avg(subPixels))
 		}
 	}
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
