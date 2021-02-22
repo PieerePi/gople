@@ -1,12 +1,10 @@
 // Copyright © 2016 Alan A. A. Donovan & Brian W. Kernighan.
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-package popcount_test
+package popcount
 
 import (
 	"testing"
-
-	"github.com/PieerePi/gople/ch2/e2.3-e2.5/popcount"
 )
 
 // -- Alternative implementations --
@@ -45,13 +43,13 @@ func PopCountByShifting(x uint64) int {
 
 func BenchmarkPopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		popcount.PopCount(0x1234567890ABCDEF)
+		PopCount(0x1234567890ABCDEF)
 	}
 }
 
 func BenchmarkPopCount2(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		popcount.PopCount2(0x1234567890ABCDEF)
+		PopCount2(0x1234567890ABCDEF)
 	}
 }
 
@@ -75,7 +73,7 @@ func BenchmarkPopCountByClearing(b *testing.B) {
 
 /*
 go version go1.15.7 windows/amd64, 2.1-4GHz R5-4600U
-go test -cpu=1 -bench=. popcount_test.go
+go test -cpu=1 -bench=.
 goos: windows
 goarch: amd64
 BenchmarkPopCount               1000000000               0.272 ns/op
@@ -85,7 +83,7 @@ BenchmarkPopCountByShifting     33558296                35.7 ns/op
 BenchmarkPopCountByClearing     92298462                13.2 ns/op
 PASS
 ok      command-line-arguments  6.168s
-go test -cpu=6 -bench=. popcount_test.go
+go test -cpu=6 -bench=.
 goos: windows
 goarch: amd64
 BenchmarkPopCount-6                     1000000000               0.277 ns/op

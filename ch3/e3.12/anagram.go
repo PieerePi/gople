@@ -1,6 +1,7 @@
-package main
+package anagram
 
-func isAnagram(a, b string) bool {
+// IsAnagram checks if two strings are anagram.
+func IsAnagram(a, b string) bool {
 	aFreq := make(map[rune]int)
 	bFreq := make(map[rune]int)
 
