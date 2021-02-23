@@ -12,13 +12,11 @@ func IsAnagram(a, b string) bool {
 		bFreq[c]++
 	}
 
-	for k, v := range aFreq {
-		if bFreq[k] != v {
-			return false
-		}
+	if len(aFreq) != len(bFreq) {
+		return false
 	}
-	for k, v := range bFreq {
-		if aFreq[k] != v {
+	for k, av := range aFreq {
+		if bv, ok := bFreq[k]; !ok || bv != av {
 			return false
 		}
 	}

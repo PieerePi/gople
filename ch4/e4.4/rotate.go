@@ -4,7 +4,22 @@ import (
 	"fmt"
 )
 
-func roateLeft(s []int, num int) {
+func reverse(s []int) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
+func rotateLeft(s []int, num int) {
+	if num <= 0 || num >= len(s) {
+		return
+	}
+	reverse(s[:num])
+	reverse(s[num:])
+	reverse(s)
+}
+
+func rotateLeft2(s []int, num int) {
 	slen := len(s)
 	if num <= 0 || num >= slen {
 		return
@@ -17,18 +32,18 @@ func roateLeft(s []int, num int) {
 
 func main() {
 	s := []int{1, 2, 3, 4, 5}
-	roateLeft(s, 0)
+	rotateLeft(s, 0)
 	fmt.Println(s) // [1 2 3 4 5]
-	roateLeft(s, 1)
+	rotateLeft(s, 1)
 	fmt.Println(s) // [2 3 4 5 1]
-	roateLeft(s, 2)
+	rotateLeft(s, 2)
 	fmt.Println(s) // [4 5 1 2 3]
-	roateLeft(s, 3)
+	rotateLeft(s, 3)
 	fmt.Println(s) // [2 3 4 5 1]
-	roateLeft(s, 4)
+	rotateLeft(s, 4)
 	fmt.Println(s) // [1 2 3 4 5]
-	roateLeft(s, 5)
+	rotateLeft(s, 5)
 	fmt.Println(s) // [1 2 3 4 5]
-	roateLeft(s, 6)
+	rotateLeft(s, 6)
 	fmt.Println(s) // [1 2 3 4 5]
 }
