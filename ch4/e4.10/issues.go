@@ -23,7 +23,7 @@ func main() {
 	fmt.Printf("%d issues:\n", result.TotalCount)
 	// data, err := json.MarshalIndent(result, "", "    ")
 	// if err != nil {
-	// 	log.Fatalf("JSON marshaling failed: %s", err)
+	// 	log.Fatalf("JSON marshaling failed: %v\n", err)
 	// }
 	// fmt.Printf("%s\n", data)
 	for _, item := range result.Items {
