@@ -3,7 +3,6 @@
 
 // See page 133.
 
-// Outline prints the outline of an HTML document tree.
 package main
 
 import (
@@ -16,12 +15,18 @@ import (
 )
 
 func main() {
-	for _, url := range os.Args[1:] {
-		outline(url)
+	if len(os.Args) != 3 {
+		fmt.Println("usage: getElementByID url id")
+		os.Exit(1)
+	}
+
+	if err := getElementByID(os.Args[1], os.Args[2]); err != nil {
+		fmt.Printf("getElementByID failed: %v\n", err)
+		os.Exit(1)
 	}
 }
 
-func outline(url string) error {
+func getElementByID(url, id string) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -37,9 +42,12 @@ func outline(url string) error {
 		return err
 	}
 
-	//!+call
-	forEachNode(doc, startElement, endElement)
-	//!-call
+	node := ElementByID(doc, id)
+	if node == nil {
+		fmt.Printf("No element with id %q found\n", id)
+	} else {
+		forEachNode(node, printStartElement, printEndElement)
+	}
 
 	return nil
 }
@@ -49,26 +57,56 @@ func outline(url string) error {
 // x in the tree rooted at n. Both functions are optional.
 // pre is called before the children are visited (preorder) and
 // post is called after (postorder).
-func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
+// pre/post/forEachNode return value:
+//    true to stop, false to continue
+func forEachNode(n *html.Node, pre, post func(n *html.Node) bool) bool {
 	if pre != nil {
-		pre(n)
+		if pre(n) {
+			return true
+		}
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		forEachNode(c, pre, post)
+		if forEachNode(c, pre, post) {
+			return true
+		}
 	}
 
 	if post != nil {
-		post(n)
+		if post(n) {
+			return true
+		}
 	}
+
+	return false
 }
 
 //!-forEachNode
 
-//!+startend
+func ElementByID(doc *html.Node, id string) *html.Node {
+	var node *html.Node
+
+	forEachNode(doc, func(n *html.Node) bool {
+		if n.Type != html.ElementNode {
+			return false
+		}
+
+		for _, a := range n.Attr {
+			if a.Key == "id" && a.Val == id {
+				node = n
+				return true
+			}
+		}
+
+		return false
+	}, nil)
+
+	return node
+}
+
 var depth int
 
-func startElement(n *html.Node) {
+func printStartElement(n *html.Node) bool {
 	if n.Type == html.CommentNode {
 		fmt.Printf("%*s<!--%s-->\n", depth*2, "", n.Data)
 	} else if n.Type == html.TextNode {
@@ -92,15 +130,15 @@ func startElement(n *html.Node) {
 		}
 		depth++
 	}
+	return false
 }
 
-func endElement(n *html.Node) {
+func printEndElement(n *html.Node) bool {
 	if n.Type == html.ElementNode {
 		depth--
 		if n.FirstChild != nil {
 			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
 		}
 	}
+	return false
 }
-
-//!-startend
