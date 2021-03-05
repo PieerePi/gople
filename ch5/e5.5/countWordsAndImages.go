@@ -49,8 +49,8 @@ func countWordsAndImages(n *html.Node) (words, images int) {
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		w, i := countWordsAndImages(c)
-		images += i
 		words += w
+		images += i
 	}
 	return
 }
