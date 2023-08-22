@@ -34,8 +34,7 @@ func TestBzip2(t *testing.T) {
 	}
 
 	// Check the size of the compressed stream.
-	// truncate --size 0 hello.txt;
-	// for ((i=0;i<1000000;i++)) do echo -n "hello" >> hello.txt; done;
+	// eval $(echo printf '"hello%0.0s"' {1..1000000}) > hello.txt;
 	// bzip2 -f hello.txt; ls -l hello.txt.bz2 | awk '{print $5}'
 	// Terrible!!!
 	// bzip2 compress 5000000 bytes (1000000 times "hello") to 255 bytes
