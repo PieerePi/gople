@@ -10,7 +10,7 @@ func CountingWriter(w io.Writer) (io.Writer, *int64)
 
 - 练习7.3：为`gopl.io/ch4/treesort`中的*tree类型（见4.4节）写一个String方法，用于展示其中的值序列。
 
-- 练习7.4：strings.NewReader函数输入一个字符串，返回一个从字符串读取数据且满足io.Reader接口（也满足其他接口）的值。请自己实现该函数，并且通过它来让HTML分析器（参与5.2节）支持以字符串作为输入。
+- 练习7.4：strings.NewReader函数输入一个字符串，返回一个从字符串读取数据且满足io.Reader接口（也满足其他接口）的值。请自己实现该函数，并且通过它来让HTML分析器（参考5.2节）支持以字符串作为输入。
 
 - 练习7.5：io包中的LimitReader函数接受io.Reader r和字节数n，返回一个Reader，该返回值从r读取数据，但在读取n字节后报告文件结束。请实现该函数。
 
@@ -26,7 +26,7 @@ func LimitReader(r io.Reader, n int64) io.Reader
 
 - 练习7.9：利用html/template（见4.6节）来替换printTracks函数，使用HTML表格来显示音乐列表。结合上一个练习，来实现通过单击列头来发送HTTP请求，进而对表格排序。
 
-- 练习7.10：sort.Interface也可以用于其他用途。试与一个函数IsPalindrome(s sort.Interface)bool来判断一个序列是否是回文，即序列反转后是否保持不变。可以假定对于下标分别为i、j的元素，如果!s.Less(i,j) && !s.Less(j,i)，那么两个元素相等。
+- 练习7.10：sort.Interface也可以用于其他用途。试写一个函数IsPalindrome(s sort.Interface)bool来判断一个序列是否是回文，即序列反转后是否保持不变。可以假定对于下标分别为i、j的元素，如果!s.Less(i,j) && !s.Less(j,i)，那么两个元素相等。
 
 - 练习7.11：增加额外的处理程序，来支持创建、读取、更新和删除数据库条目。比如，/update?item=socks&price=6这样的请求将更新仓库中物品的价格，如果商品不存在或者价格无效就返回错误。（注意：这次修改会引入并发变量修改）
 
