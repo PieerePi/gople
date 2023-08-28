@@ -18,6 +18,7 @@ import (
 func main() {
 	for _, v := range os.Args[1:] {
 		sl := strings.Split(v, "=")
+		// no go func
 		getTime(sl[0], sl[1])
 	}
 }
@@ -30,20 +31,19 @@ func getTime(zone string, ts string) {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-	mustCopy(zone, os.Stdout, conn)
-	//mustCopy(conn, os.Stdin)
+	os.Stdout.Write([]byte(zone + ": "))
+	mustCopy(os.Stdout, conn)
 }
 
-func mustCopy(zone string, dst io.Writer, src io.Reader) {
-	dst.Write([]byte(zone + ": "))
+func mustCopy(dst io.Writer, src io.Reader) {
 	if _, err := io.Copy(dst, src); err != nil {
 		log.Fatal(err)
 	}
 }
 
 /*
-go run ch8\e8.1\clockwall.go NewYork=192.168.88.108:8010 Tokyo=192.168.88.108:8020 London=192.168.88.108:8030
-NewYork: Sun Oct 14 05:45:36 EDT 2018
-Tokyo: Sun Oct 14 18:45:36 JST 2018
-London: Sun Oct 14 10:45:36 BST 2018
+go run clockwall.go NewYork=localhost:8010 Tokyo=localhost:8020 London=localhost:8030
+NewYork: Tue Mar  9 23:17:59 CST 2021
+Tokyo: Tue Mar  9 23:18:00 CST 2021
+London: Tue Mar  9 23:18:00 CST 2021
 */

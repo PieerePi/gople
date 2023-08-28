@@ -11,6 +11,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strconv"
 	"time"
 )
 
@@ -26,11 +27,11 @@ func handleConn(c net.Conn) {
 	}
 }
 
-var port = flag.String("port", "8000", "server port number")
+var port = flag.Int("port", 8000, "server port number")
 
 func main() {
 	flag.Parse()
-	listener, err := net.Listen("tcp", "192.168.88.108:"+*port)
+	listener, err := net.Listen("tcp", "localhost:"+strconv.Itoa(*port))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,7 +48,6 @@ func main() {
 }
 
 /*
-In CentOS 7.5 1804, 192.168.88.108
 $ TZ=US/Eastern ./clock2 -port 8010 &
 $ TZ=Asia/Tokyo ./clock2 -port 8020 &
 $ TZ=Europe/London ./clock2 -port 8030 &
