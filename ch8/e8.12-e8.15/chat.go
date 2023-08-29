@@ -70,13 +70,13 @@ func broadcaster() {
 				var sender string
 				var message string
 				if _, ok := clients[msg.channel]; !ok {
+					// TIMEOUT: we will get a LEAVING here
 					continue
 				} else {
 					sender = clients[msg.channel].name
 					if msg.msgtype == TIMEOUT {
 						writeOrSkip(msg.channel, sender+" 由于你长时间没有反应，你已被移出了聊天室。")
 					}
-					// let clientWriter exit the loop and then close the connection
 					close(msg.channel)
 					delete(clients, msg.channel)
 				}
@@ -96,8 +96,10 @@ func broadcaster() {
 					continue
 				} else {
 					sender = clients[msg.channel].name
-					// update lasttime
-					clients[msg.channel] = client{clients[msg.channel].channel, clients[msg.channel].addr, clients[msg.channel].name, time.Now()}
+					// Update lasttime
+					orgClient := clients[msg.channel]
+					orgClient.lasttime = time.Now()
+					clients[msg.channel] = orgClient
 				}
 				message := "\t\t" + sender + " 说: " + msg.message
 				for channel := range clients {
@@ -111,7 +113,6 @@ func broadcaster() {
 				if cli.lasttime.Add(IDLETIMEOUT).Before(time.Now()) {
 					lch := cli.channel
 					go func() { messages <- msg{TIMEOUT, lch, "", ""} }()
-
 				}
 			}
 		}
@@ -147,7 +148,8 @@ func clientWriter(conn net.Conn, ch <-chan string) {
 	for msg := range ch {
 		fmt.Fprintln(conn, msg) // NOTE: ignoring network errors
 	}
-	//fmt.Println("close conn")
+	// TIMEOUT: close the connection to let handleConn exit the input.Scan loop
+	// LEAVING: the connection might be closed in handleConn first or here?
 	conn.Close()
 }
 
