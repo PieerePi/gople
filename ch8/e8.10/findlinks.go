@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -24,9 +25,14 @@ import (
 
 // Extract makes an HTTP GET request to the specified URL, parses
 // the response as HTML, and returns the links in the HTML document.
-func Extract(url string) ([]string, error) {
+func Extract(ctx context.Context, url string) ([]string, error) {
 	client := &http.Client{Timeout: 30 * time.Second}
-	resp, err := client.Get(url)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -75,9 +81,9 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 	}
 }
 
-func crawl(url string) []string {
+func crawl(ctx context.Context, url string) []string {
 	// fmt.Println(url)
-	list, err := Extract(url)
+	list, err := Extract(ctx, url)
 	if err != nil {
 		log.Print(err)
 	}
@@ -95,6 +101,8 @@ type LINK struct {
 }
 
 var depthFlag = flag.Int("depth", 1, "the maximum depth of links")
+
+var done = make(chan struct{})
 
 // !+
 func main() {
@@ -118,7 +126,7 @@ func main() {
 			for {
 				select {
 				case link := <-unseenLinksChan:
-					foundLinks := crawl(link.link)
+					foundLinks := crawl(ctx, link.link)
 					newdepth := link.depth + 1
 					// go func() { worklist <- WORKLIST{foundLinks, newdepth} }()
 					workListChan <- WORKLIST{foundLinks, newdepth}
@@ -132,12 +140,18 @@ func main() {
 		}(mainCtx, i+1)
 	}
 
+	go func() {
+		os.Stdin.Read(make([]byte, 1)) // read a single byte
+		done <- struct{}{}
+	}()
+
 	// The main goroutine de-duplicates worklist items
 	// and sends the unseen ones to the crawlers.
 	seen := make(map[string]bool)
 	tick := time.Tick(1000 * time.Millisecond)
 	var worklist []WORKLIST
 	workerStatus := &strings.Builder{}
+	gotDone := false
 loop:
 	for {
 		select {
@@ -160,7 +174,9 @@ loop:
 				working--
 			}
 			if working == 0 && len(worklist) == 0 {
-				mainCancel()
+				if !gotDone {
+					mainCancel()
+				}
 				wg.Wait()
 				// fmt.Println("All crawl goroutins exit.")
 				fmt.Println("All done.")
@@ -202,6 +218,12 @@ loop:
 			}
 		case <-tick:
 			fmt.Fprintf(workerStatus, "%v: %d workers are working.\n", time.Now(), working)
+		case <-done:
+			if !gotDone {
+				gotDone = true
+				log.Println("User canceled!")
+				mainCancel()
+			}
 		}
 	}
 }

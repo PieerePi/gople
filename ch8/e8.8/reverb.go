@@ -23,6 +23,13 @@ func echo(c net.Conn, shout string, delay time.Duration) {
 	fmt.Fprintln(c, "\t", strings.ToLower(shout))
 }
 
+const (
+	EXIT    = 0
+	GOTTEXT = 1
+)
+
+const IDLETIMEOUT = 10 * time.Second
+
 // !+
 func handleConn(c net.Conn) {
 	reportChan := make(chan int)
@@ -30,17 +37,17 @@ func handleConn(c net.Conn) {
 		input := bufio.NewScanner(c)
 		for input.Scan() {
 			// got text
-			reportChan <- 1
+			reportChan <- GOTTEXT
 			go echo(c, input.Text(), 1*time.Second)
 		}
 		// NOTE: ignoring potential errors from input.Err()
 		c.Close()
 		// closed
-		reportChan <- 0
+		reportChan <- EXIT
 	}()
 
 	gotRequest := false
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(IDLETIMEOUT)
 	defer ticker.Stop()
 	for {
 		select {
@@ -53,10 +60,10 @@ func handleConn(c net.Conn) {
 				gotRequest = false
 			}
 		case r := <-reportChan:
-			if r == 0 {
+			if r == EXIT {
 				log.Println("Connection closed.")
 				return
-			} else if r == 1 {
+			} else if r == GOTTEXT {
 				gotRequest = true
 			}
 		}
