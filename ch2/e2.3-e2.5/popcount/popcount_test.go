@@ -72,25 +72,28 @@ func BenchmarkPopCountByClearing(b *testing.B) {
 }
 
 /*
-go version go1.15.7 windows/amd64, 2.1-4GHz R5-4600U
-go test -cpu=1 -bench=.
+go test -cpu=1 -bench .
 goos: windows
 goarch: amd64
-BenchmarkPopCount               1000000000               0.272 ns/op
-BenchmarkPopCount2              153538957                7.86 ns/op
-BenchmarkBitCount               1000000000               0.259 ns/op
-BenchmarkPopCountByShifting     33558296                35.7 ns/op
-BenchmarkPopCountByClearing     92298462                13.2 ns/op
+pkg: github.com/PieerePi/gople/ch2/e2.3-e2.5/popcount
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+BenchmarkPopCount               1000000000               0.6008 ns/op
+BenchmarkPopCount2              139100662                8.808 ns/op
+BenchmarkBitCount               1000000000               0.6040 ns/op
+BenchmarkPopCountByShifting     27931594                42.54 ns/op
+BenchmarkPopCountByClearing     39550442                27.76 ns/op
 PASS
-ok      command-line-arguments  6.168s
-go test -cpu=6 -bench=.
+ok      github.com/PieerePi/gople/ch2/e2.3-e2.5/popcount        6.227s
+go test -cpu=6 -bench .
 goos: windows
 goarch: amd64
-BenchmarkPopCount-6                     1000000000               0.277 ns/op
-BenchmarkPopCount2-6                    146317784                8.24 ns/op
-BenchmarkBitCount-6                     1000000000               0.257 ns/op
-BenchmarkPopCountByShifting-6           31427022                36.8 ns/op
-BenchmarkPopCountByClearing-6           92288523                13.4 ns/op
+pkg: github.com/PieerePi/gople/ch2/e2.3-e2.5/popcount
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+BenchmarkPopCount-6                     1000000000               0.6313 ns/op
+BenchmarkPopCount2-6                    129351421                8.349 ns/op
+BenchmarkBitCount-6                     1000000000               0.5973 ns/op
+BenchmarkPopCountByShifting-6           25940056                42.55 ns/op
+BenchmarkPopCountByClearing-6           48317347                27.89 ns/op
 PASS
-ok      command-line-arguments  5.340s
+ok      github.com/PieerePi/gople/ch2/e2.3-e2.5/popcount        6.309s
 */

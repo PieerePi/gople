@@ -19,13 +19,13 @@ func BenchmarkRotateLeft2(b *testing.B) {
 }
 
 /*
-go version go1.15.7 windows/amd64, 2.60GHz i5-4210M
-go test -bench=.
+go test -bench .
 goos: windows
 goarch: amd64
 pkg: github.com/PieerePi/gople/ch4/e4.4
-BenchmarkRotateLeft-4           50032938                20.5 ns/op
-BenchmarkRotateLeft2-4          23002650                46.8 ns/op
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+BenchmarkRotateLeft-12          48922082                21.49 ns/op
+BenchmarkRotateLeft2-12         14273750                79.40 ns/op
 PASS
-ok      github.com/PieerePi/gople/ch4/e4.4      2.498s
+ok      github.com/PieerePi/gople/ch4/e4.4      2.714s
 */

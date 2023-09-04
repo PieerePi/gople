@@ -18,6 +18,8 @@ var longStrArray []string
 
 func init() {
 	var str = [10]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"}
+	// flag.Parse will fail if doesn't Init package testing
+	testing.Init()
 	flag.Parse()
 	longStrArray = make([]string, *scount)
 	for i := range longStrArray {
@@ -46,13 +48,24 @@ func BenchmarkStrOp2(b *testing.B) {
 }
 
 /*
-go version go1.11 windows/amd64, 2.60GHz i5-3230M
-go test -cpu=4 -bench=. gople\ch1\e1.3\strop_test.go -slen=10 -scount=1000
+go test -cpu=1 -bench . -slen=10 -scount=1000
 strop_test init done
 goos: windows
 goarch: amd64
-BenchmarkStrOp1-4           1000           1503459 ns/op
-BenchmarkStrOp2-4         100000             19074 ns/op
+pkg: github.com/PieerePi/gople/ch1/e1.3
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+BenchmarkStrOp1              679           1674839 ns/op
+BenchmarkStrOp2            62929             19239 ns/op
 PASS
-ok      command-line-arguments  4.301s
+ok      github.com/PieerePi/gople/ch1/e1.3      3.117s
+go test -cpu=6 -bench . -slen=10 -scount=1000
+strop_test init done
+goos: windows
+goarch: amd64
+pkg: github.com/PieerePi/gople/ch1/e1.3
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+BenchmarkStrOp1-6            553           2187795 ns/op
+BenchmarkStrOp2-6          58640             20420 ns/op
+PASS
+ok      github.com/PieerePi/gople/ch1/e1.3      3.213s
 */

@@ -3,8 +3,10 @@
 
 package intset
 
-import "fmt"
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Example_one() {
 	//!+main
@@ -223,19 +225,19 @@ func Benchmark_Elems8(b *testing.B) {
 切记，尽量使用range和append，不要用c的方式写Go代码
 */
 /*
-go test -bench=. gople\ch6\e6.1-e6.4
-go version go1.11 windows/amd64
+go test -bench .
 goos: windows
 goarch: amd64
-pkg: gople/ch6/e6.1-e6.4
-Benchmark_Elems-4          50000             39337 ns/op
-Benchmark_Elems2-4         30000             43974 ns/op
-Benchmark_Elems3-4         30000             45573 ns/op
-Benchmark_Elems4-4         30000             43108 ns/op
-Benchmark_Elems5-4         50000             40536 ns/op
-Benchmark_Elems6-4         20000             81603 ns/op
-Benchmark_Elems7-4         20000             82302 ns/op
-Benchmark_Elems8-4         20000             80578 ns/op
+pkg: github.com/PieerePi/gople/ch6/e6.5
+cpu: AMD Ryzen 5 4600U with Radeon Graphics
+Benchmark_Elems-12         18459             66591 ns/op
+Benchmark_Elems2-12        18774             62666 ns/op
+Benchmark_Elems3-12        18142             66406 ns/op
+Benchmark_Elems4-12        20691             59486 ns/op
+Benchmark_Elems5-12        18120             67316 ns/op
+Benchmark_Elems6-12         8145            145626 ns/op
+Benchmark_Elems7-12         8083            153779 ns/op
+Benchmark_Elems8-12         8737            145049 ns/op
 PASS
-ok      gople/ch6/e6.1-e6.4     18.061s
+ok      github.com/PieerePi/gople/ch6/e6.5      13.474s
 */
