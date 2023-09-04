@@ -48,6 +48,11 @@ var (
 
 func writeOrSkip(channel clientChannel, message string) {
 	select {
+	// If channel is an unbuffered channel and there is someone
+	// blocking to read, or if channel is a buffered channel and
+	// there is a vacancy, message will be sent to channel,
+	// otherwise this branch will not be selected, then function
+	// will return without doing anything.
 	case channel <- message:
 	default:
 	}

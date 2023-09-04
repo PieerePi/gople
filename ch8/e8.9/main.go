@@ -51,7 +51,7 @@ func main() {
 	var m sync.WaitGroup
 	for i := range roots {
 		m.Add(1)
-		go func(mp *sync.WaitGroup, i int) {
+		go func(i int) {
 			// Print the results periodically.
 			var tick <-chan time.Time
 			if *vFlag {
@@ -71,8 +71,8 @@ func main() {
 				}
 			}
 			printDiskUsage(roots[i], nfiles[i], nbytes[i])
-			mp.Done()
-		}(&m, i)
+			m.Done()
+		}(i)
 	}
 
 	n.Wait()

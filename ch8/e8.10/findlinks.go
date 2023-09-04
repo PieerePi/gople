@@ -142,7 +142,7 @@ func main() {
 
 	go func() {
 		os.Stdin.Read(make([]byte, 1)) // read a single byte
-		done <- struct{}{}
+		close(done)
 	}()
 
 	// The main goroutine de-duplicates worklist items
@@ -156,7 +156,7 @@ loop:
 	for {
 		select {
 		case list := <-workListChan:
-			if len(list.list) == 0 {
+			if len(list.list) == 0 || gotDone {
 				continue
 			}
 			if list.depth >= *depthFlag {

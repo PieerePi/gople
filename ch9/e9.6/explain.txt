@@ -1,0 +1,250 @@
+In most cases, creating workers with the same number of CPUs
+is always the best choice.
+
+Default value of GOMAXPROCS is also the number of CPUs.
+
+In a container, we should use the following method to get the
+correct CPU quota.
+import _ "github.com/uber-go/automaxprocs"
+
+This module sets GOMAXPROCS to the correct CPU quota in the
+initialization block.
+
+$ nproc
+12
+
+$lscpu
+    Thread(s) per core:  2
+    Core(s) per socket:  6
+    Socket(s):           1
+
+GOMAXPROCS is 1.
+1 workers rendered in: 6.0263244s, 0 workers were not working
+
+real    0m7.412s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 2.
+2 workers rendered in: 3.1042203s, 0 workers were not working
+
+real    0m4.329s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 4.
+4 workers rendered in: 1.5488798s, 0 workers were not working
+
+real    0m2.744s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 6.
+6 workers rendered in: 1.1756766s, 0 workers were not working
+
+real    0m2.331s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 8.
+8 workers rendered in: 1.0561663s, 0 workers were not working
+
+real    0m2.279s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 10.
+10 workers rendered in: 905.9995ms, 0 workers were not working
+
+real    0m2.125s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 12.
+12 workers rendered in: 842.8638ms, 0 workers were not working
+
+real    0m2.087s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 14.
+14 workers rendered in: 883.0059ms, 0 workers were not working
+
+real    0m2.113s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 16.
+16 workers rendered in: 838.6537ms, 0 workers were not working
+
+real    0m2.082s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 18.
+18 workers rendered in: 842.3783ms, 0 workers were not working
+
+real    0m2.127s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 20.
+20 workers rendered in: 846.9049ms, 0 workers were not working
+
+real    0m2.121s
+user    0m0.000s
+sys     0m0.016s
+
+GOMAXPROCS is 22.
+22 workers rendered in: 866.6925ms, 0 workers were not working
+
+real    0m2.137s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 24.
+24 workers rendered in: 841.6088ms, 0 workers were not working
+
+real    0m2.109s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 26.
+26 workers rendered in: 839.999ms, 0 workers were not working
+
+real    0m2.094s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 28.
+28 workers rendered in: 845.1875ms, 0 workers were not working
+
+real    0m2.101s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 30.
+30 workers rendered in: 858.9305ms, 0 workers were not working
+
+real    0m2.137s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 32.
+32 workers rendered in: 840.5073ms, 0 workers were not working
+
+real    0m2.137s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 34.
+34 workers rendered in: 851.6332ms, 0 workers were not working
+
+real    0m2.128s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 36.
+36 workers rendered in: 841.3177ms, 0 workers were not working
+
+real    0m2.107s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 38.
+38 workers rendered in: 843.3855ms, 0 workers were not working
+
+real    0m2.147s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 40.
+40 workers rendered in: 842.7926ms, 0 workers were not working
+
+real    0m2.176s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 42.
+42 workers rendered in: 840.4348ms, 0 workers were not working
+
+real    0m2.138s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 44.
+44 workers rendered in: 846.4463ms, 0 workers were not working
+
+real    0m2.151s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 46.
+46 workers rendered in: 858.3339ms, 0 workers were not working
+
+real    0m2.183s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 48.
+48 workers rendered in: 847.3302ms, 0 workers were not working
+
+real    0m2.148s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 50.
+50 workers rendered in: 834.3247ms, 0 workers were not working
+
+real    0m2.137s
+user    0m0.015s
+sys     0m0.000s
+
+GOMAXPROCS is 52.
+52 workers rendered in: 853.6685ms, 0 workers were not working
+
+real    0m2.176s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 54.
+54 workers rendered in: 838.4766ms, 0 workers were not working
+
+real    0m2.118s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 56.
+56 workers rendered in: 841.075ms, 0 workers were not working
+
+real    0m2.141s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 58.
+58 workers rendered in: 838.9845ms, 0 workers were not working
+
+real    0m2.153s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 60.
+60 workers rendered in: 832.9624ms, 0 workers were not working
+
+real    0m2.152s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 62.
+62 workers rendered in: 843.7241ms, 0 workers were not working
+
+real    0m2.148s
+user    0m0.000s
+sys     0m0.000s
+
+GOMAXPROCS is 64.
+64 workers rendered in: 855.593ms, 0 workers were not working
+
+real    0m2.171s
+user    0m0.000s
+sys     0m0.031s
